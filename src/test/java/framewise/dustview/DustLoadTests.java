@@ -4,11 +4,9 @@ import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
 import java.io.InputStream;
-import java.io.SequenceInputStream;
 import java.io.StringWriter;
 
 import org.junit.Test;
-import org.mozilla.javascript.Context;
 
 public class DustLoadTests {
 
@@ -70,6 +68,11 @@ public class DustLoadTests {
 		StringWriter writer = new StringWriter();
 		loader.render(writer, "test2", "{\"name\":\"chanwook\"}");
 		assertThat(writer.getBuffer().toString(), is("Hello chanwook World!"));
+	}
+
+	@Test
+	public void thrownExceptionAtUncorrenctPath() throws Exception {
+		// TODO ..
 	}
 
 	static class TestDustLoader extends DustLoader {

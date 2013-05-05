@@ -3,12 +3,13 @@ package framewise.dustview;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.StringWriter;
 import java.io.Writer;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.JavaScriptException;
 import org.mozilla.javascript.Scriptable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -16,6 +17,8 @@ import org.mozilla.javascript.Scriptable;
  * 
  */
 public class DustLoader {
+
+	protected final Logger logger = LoggerFactory.getLogger(getClass());
 
 	public static final String DEFAULT_DUST_JS_FILE_PATH = "/dust/dust-full-1.1.1.js";
 	public static final String DEFAULT_DUST_HELPER_JS_FILE_PATH = "/dust/dust-helpers-1.1.0.js";
@@ -63,6 +66,7 @@ public class DustLoader {
 			context.evaluateReader(globalScope, dustJsHelperReader, "dust-helpers-1.1.0.js",
 					dustHelperJsStream.available(), null);
 		} catch (Exception e) {
+			logger.error("thrown exception when initialize step!", e);
 			throw new RuntimeException(e);
 		} finally {
 			Context.exit();
@@ -108,7 +112,7 @@ public class DustLoader {
 	 * @param templateKey
 	 * @param json
 	 */
-	protected void render(Writer writer, String templateKey, String json) {
+	public void render(Writer writer, String templateKey, String json) {
 		Context context = Context.enter();
 
 		Scriptable renderScope = context.newObject(globalScope);
@@ -134,6 +138,9 @@ public class DustLoader {
 	 */
 	public InputStream getDustJsStream(String filePath) {
 		InputStream resourceStream = getClass().getResourceAsStream(filePath);
+		if (resourceStream == null) {
+			throw new IllegalArgumentException("uncorrect filePath! '" + filePath + "' does not exist!");
+		}
 		return resourceStream;
 	}
 
