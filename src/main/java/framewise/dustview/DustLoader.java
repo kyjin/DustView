@@ -13,6 +13,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 
+ * Support server-side dust rendering..
+ *  
  * @author chanwook
  * 
  */
@@ -20,26 +22,40 @@ public class DustLoader {
 
 	protected final Logger logger = LoggerFactory.getLogger(getClass());
 
+	public static final String DEFAULT_COMPILE_SOURCE_NAME = "ServerSideDustCompiler";
+
+	private static final String DEFAULT_ENCODING = "UTF-8";
+
 	public static final String DEFAULT_DUST_JS_FILE_PATH = "/dust/dust-full-1.1.1.js";
 	public static final String DEFAULT_DUST_HELPER_JS_FILE_PATH = "/dust/dust-helpers-1.1.0.js";
 
 	public static final String DEFAULT_COMPILE_SCRIPT = "(dust.compile(source, templateKey))";
 	public static final String DEFAULT_LOAD_SCRIPT = "(dust.loadSource(compiledSource))";
-	public static final String DEFAULT_RENDER_SCRIPT = ("{   dust.render( templateKey, JSON.parse(json), "
-			+ "function(error, data) { if(error) { writer.write(error);} else { writer.write( data );} } );}");
+	public static final String DEFAULT_RENDER_SCRIPT = (
+					"{   dust.render( templateKey, JSON.parse(json), "
+							+ "function(error, data) { if(error) { writer.write(error);} else { writer.write( data );} } );}"
+			);
 
+	
 	private String dustJsFilePath = DEFAULT_DUST_JS_FILE_PATH;
 	private String dustJsHelperFilePath = DEFAULT_DUST_HELPER_JS_FILE_PATH;
+	
+	private String encoding = DEFAULT_ENCODING;
 
+	public String compileSourceName = DEFAULT_COMPILE_SOURCE_NAME;
+	
 	private String compileScript = DEFAULT_COMPILE_SCRIPT;
 	private String loadScript = DEFAULT_LOAD_SCRIPT;
 	private String renderScript = DEFAULT_RENDER_SCRIPT;
 
 	public static Scriptable globalScope;
-
+	
 	public DustLoader() {
 	}
 
+	/**
+	 * dust context initialize method. must call before running dust
+	 */
 	public void initializeContext() {
 		InputStream dustJsStream = getDustJsStream(getDustJsFilePath());
 		InputStream dustHelperJsStream = getDustJsStream(getDustJsHelperFilePath());
@@ -55,15 +71,15 @@ public class DustLoader {
 	 */
 	protected void loadDustJsEngine(InputStream dustJsStream, InputStream dustHelperJsStream) {
 		try {
-			Reader dustJsReader = new InputStreamReader(dustJsStream, "UTF-8");
-			Reader dustJsHelperReader = new InputStreamReader(dustHelperJsStream, "UTF-8");
+			Reader dustJsReader = new InputStreamReader(dustJsStream, encoding);
+			Reader dustJsHelperReader = new InputStreamReader(dustHelperJsStream, encoding);
 
 			Context context = Context.enter();
 			context.setOptimizationLevel(9);
 
 			globalScope = context.initStandardObjects();
-			context.evaluateReader(globalScope, dustJsReader, "dust-full-1.1.1.js", dustJsStream.available(), null);
-			context.evaluateReader(globalScope, dustJsHelperReader, "dust-helpers-1.1.0.js",
+			context.evaluateReader(globalScope, dustJsReader, dustJsFilePath, dustJsStream.available(), null);
+			context.evaluateReader(globalScope, dustJsHelperReader, dustJsHelperFilePath,
 					dustHelperJsStream.available(), null);
 		} catch (Exception e) {
 			logger.error("thrown exception when initialize step!", e);
@@ -83,7 +99,7 @@ public class DustLoader {
 		compileScope.put("templateKey", compileScope, templateKey);
 
 		try {
-			return (String) context.evaluateString(compileScope, compileScript, "JDustCompiler", 0, null);
+			return (String) context.evaluateString(compileScope, compileScript, compileSourceName, 0, null);
 		} catch (JavaScriptException e) {
 			throw new RuntimeException("thrown error when compile Dust JS Source", e);
 		}
@@ -101,7 +117,7 @@ public class DustLoader {
 		compileScope.put("compiledSource", compileScope, compiledSource);
 
 		try {
-			context.evaluateString(compileScope, loadScript, "JDustCompiler", 0, null);
+			context.evaluateString(compileScope, loadScript, compileSourceName, 0, null);
 		} catch (JavaScriptException e) {
 			throw new RuntimeException("thrown error when load Dust JS Source", e);
 		}
@@ -123,7 +139,7 @@ public class DustLoader {
 			renderScope.put("json", renderScope, json);
 			renderScope.put("templateKey", renderScope, templateKey);
 
-			context.evaluateString(renderScope, renderScript, "JDustCompiler", 0, null);
+			context.evaluateString(renderScope, renderScript, compileSourceName, 0, null);
 
 		} catch (JavaScriptException e) {
 			throw new RuntimeException("thrown error when Rendering Dust JS Source", e);
@@ -157,4 +173,30 @@ public class DustLoader {
 	public String getDustJsHelperFilePath() {
 		return dustJsHelperFilePath;
 	}
+	
+	public void setDustJsFilePath(String dustJsFilePath) {
+		this.dustJsFilePath = dustJsFilePath;
+	}
+	
+	public void setDustJsHelperFilePath(String dustJsHelperFilePath) {
+		this.dustJsHelperFilePath = dustJsHelperFilePath;
+	}
+	
+	public void setEncoding(String encoding) {
+		this.encoding = encoding;
+	}
+	
+	public void setCompileScript(String compileScript) {
+		this.compileScript = compileScript;
+	}
+	
+	public void setLoadScript(String loadScript) {
+		this.loadScript = loadScript;
+	}
+	
+	public void setRenderScript(String renderScript) {
+		this.renderScript = renderScript;
+	}
+	
+	
 }
