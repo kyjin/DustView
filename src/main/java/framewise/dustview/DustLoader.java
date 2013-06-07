@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * 
- * Support server-side dust rendering..
- *  
+ * Support server-side dust rendering Function. This class load by Rhino JavaScript Engine.
+ * 
  * @author chanwook
  * 
  */
@@ -89,6 +89,13 @@ public class DustLoader {
 		}
 	}
 
+	/**
+	 * Compile HTML Markup that used by Dust.js
+	 * 
+	 * @param source HTML Markup Source
+	 * @param templateKey
+	 * @return Compiled HTML Markup(JavaScript Format)
+	 */
 	public String compile(String source, String templateKey) {
 		Context context = Context.enter();
 
@@ -106,7 +113,9 @@ public class DustLoader {
 	}
 
 	/**
-	 * @param compiledSource
+	 * Load Compiled Markup Source to JavaScript Object
+	 *  
+	 * @param compiledSource load target HTML Markup
 	 */
 	public void load(String compiledSource) {
 		Context context = Context.enter();
@@ -124,6 +133,9 @@ public class DustLoader {
 	}
 
 	/**
+	 * Rendering Markup. result is binded to Markup with JSON data.
+	 * Result is plain text HTML markup, then will write to {@link Writer} object.
+	 * 
 	 * @param writer
 	 * @param templateKey
 	 * @param json
@@ -160,6 +172,10 @@ public class DustLoader {
 		return resourceStream;
 	}
 
+	/*
+	 * Getter & Setter Method
+	 */
+	
 	/**
 	 * @return
 	 */
