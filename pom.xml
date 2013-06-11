@@ -1,12 +1,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>framewise</groupId>
+	<groupId>co.kr.itwise</groupId>
 	<artifactId>dustview</artifactId>
 	<version>0.1</version>
 	<packaging>jar</packaging>
 	<name>DustView</name>
 	<description>Server-Side Dust View Library</description>
 	<url>https://github.com/framewise/DustView</url>
+
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
+	
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
@@ -22,24 +29,17 @@
 		</developer>
 	</developers>
 
-	<scm>
-		<connection>scm:git:git://github.com/framewise/DustView.git</connection>
-		<developerConnection>scm:git:git@github.com:framewise/DustView.git</developerConnection>
-		<url>https://github.com/framewise/DustView</url>
-	</scm>
+<!-- 	<scm> -->
+<!-- 		<connection>         scm:git:git://github.com/framewise/DustView.git</connection> -->
+<!-- 		<developerConnection>scm:git:git@github.com:framewise/DustView.git</developerConnection> -->
+<!-- 		<url>https://github.com/framewise/DustView</url> -->
+<!-- 	</scm> -->
 
-	<distributionManagement>
-		<snapshotRepository>
-			<id>sonatype-nexus-snapshots</id>
-			<name>Sonatype Nexus snapshot repository</name>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>sonatype-nexus-staging</id>
-			<name>Sonatype Nexus release repository</name>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-	</distributionManagement>
+	<scm>
+		<connection>scm:git:git@github.com:kyjin/DustView.git</connection>
+		<developerConnection>scm:git:git@github.com:kyjin/DustView.git</developerConnection>
+		<url>https://github.com/kyjin/DustView.git</url>
+	</scm>
 
 	<dependencies>
 		<!-- Test -->
