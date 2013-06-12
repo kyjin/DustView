@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>co.kr.itwise</groupId>
 	<artifactId>dustview</artifactId>
-	<version>0.2-SNAPSHOT</version>
+	<version>0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>DustView</name>
 	<description>Server-Side Dust View Library</description>
@@ -13,7 +13,6 @@
 		<artifactId>oss-parent</artifactId>
 		<version>7</version>
 	</parent>
-<!-- 	ssh 테스트 -->
 	
 	<licenses>
 		<license>
@@ -100,7 +99,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
-				<version>2.2.2</version>
 				<configuration>
 					<arguments>-Dgpg.passphrase=${gpg.passphrase}</arguments>
 				</configuration>
