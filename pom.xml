@@ -38,7 +38,7 @@
 	<scm>
 		<connection>scm:git:git@github.com:kyjin/DustView.git</connection>
 		<developerConnection>scm:git:git@github.com:kyjin/DustView.git</developerConnection>
-		<url>https://github.com/kyjin/DustView.git</url>
+		<url>git@github.com:kyjin/DustView.git</url>
 	</scm>
 
 	<dependencies>
