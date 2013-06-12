@@ -13,6 +13,7 @@
 		<artifactId>oss-parent</artifactId>
 		<version>7</version>
 	</parent>
+<!-- 	ssh 테스트 -->
 	
 	<licenses>
 		<license>
@@ -29,13 +30,7 @@
 		</developer>
 	</developers>
 
-<!-- 	<scm> -->
-<!-- 		<connection>         scm:git:git://github.com/framewise/DustView.git</connection> -->
-<!-- 		<developerConnection>scm:git:git@github.com:framewise/DustView.git</developerConnection> -->
-<!-- 		<url>https://github.com/framewise/DustView</url> -->
-<!-- 	</scm> -->
-
-	<scm>
+	<scm> 
 		<connection>scm:git:git@github.com:kyjin/DustView.git</connection>
 		<developerConnection>scm:git:git@github.com:kyjin/DustView.git</developerConnection>
 		<url>git@github.com:kyjin/DustView.git</url>
